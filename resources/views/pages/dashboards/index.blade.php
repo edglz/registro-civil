@@ -1,6 +1,7 @@
 <x-default-layout>
     <link href="https://releases.transloadit.com/uppy/v3.3.1/uppy.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+    <script src="https://rawgit.com/RobinHerbots/Inputmask/5.x/dist/jquery.inputmask.js"></script>
     <style>
         .float {
             position: fixed;
@@ -56,11 +57,16 @@
                                             <td>{{ $d->nombre_mujer }} {{ $d->apellidop_mujer }}
                                                 {{ $d->apellidom_mujer }}</td>
                                             <td>{{ $d->fecha_registro }}</td>
-                                            <td>@if ($d->archivo == '0' || $d->archivo == null)
-                                                -
-                                            @else
-                                                <a name="" id="" class="btn btn-primary" href="/storage/{{ $d->archivo }}" target="_blank" role="button">Descargar</a>
-                                            @endif</td>                                            <td>
+                                            <td>
+                                                @if ($d->archivo == '0' || $d->archivo == null)
+                                                    -
+                                                @else
+                                                    <a name="" id="" class="btn btn-primary"
+                                                        href="/storage/{{ $d->archivo }}" target="_blank"
+                                                        role="button">Descargar</a>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 <button type="button" onclick="DeleteRow({{ $d->id }})"
                                                     class="btn btn-danger"><i class="mdi mdi-trash-can"></i></button>
                                                 <button onclick="ShowModal({{ $d->id }})" type="button"
@@ -98,11 +104,15 @@
                                             <td>{{ $d->nombre_madre }} {{ $d->apellidop_madre }}
                                                 {{ $d->apellidom_madre }}</td>
                                             <td>{{ $d->fecha_registro }}</td>
-                                            <td>@if ($d->archivo == '0' || $d->archivo == null)
-                                                -
-                                            @else
-                                                <a name="" id="" class="btn btn-primary" href="/storage/{{ $d->archivo }}" target="_blank" role="button">Descargar</a>
-                                            @endif</td>
+                                            <td>
+                                                @if ($d->archivo == '0' || $d->archivo == null)
+                                                    -
+                                                @else
+                                                    <a name="" id="" class="btn btn-primary"
+                                                        href="/storage/{{ $d->archivo }}" target="_blank"
+                                                        role="button">Descargar</a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <button type="button" onclick="DeleteRow({{ $d->id }})"
                                                     class="btn btn-danger">Eliminar</button>
@@ -136,11 +146,15 @@
                                                 {{ $d->apellido_materno }}</td>
 
                                             <td>{{ $d->fecha }}</td>
-                                            <td>@if ($d->archivo == '0' || $d->archivo == null)
-                                                -
-                                            @else
-                                                <a name="" id="" class="btn btn-primary" href="/storage/{{ $d->archivo }}" target="_blank" role="button">Descargar</a>
-                                            @endif</td>
+                                            <td>
+                                                @if ($d->archivo == '0' || $d->archivo == null)
+                                                    -
+                                                @else
+                                                    <a name="" id="" class="btn btn-primary"
+                                                        href="/storage/{{ $d->archivo }}" target="_blank"
+                                                        role="button">Descargar</a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <button type="button" onclick="DeleteRow({{ $d->id }})"
                                                     class="btn btn-danger">Eliminar</button>
@@ -156,16 +170,41 @@
                                     @endforeach
                                 </tbody>
                             @endif
+                            @if ($type == 'rectificaciones')
+                                <thead>
+                                    <caption>Rectificaciones</caption>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nota</th>
+                                        <th>¿Donde?</th>
+                                        <th>ID Trámite</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    @foreach ($data as $k => $d)
+                                        <tr>
+                                            <td>{{ $d->id }}</td>
+                                            <td>{{ $d->nota }}</td>
+                                            <td>{{ $d->form }}</td>
+                                            <td>{{ $d->id_dato }}</td>
+                                            <td>{{ $d->fecha }}</td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            @endif
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <a href="javascript:ShowModal();" class="float">
-        <i class="fa fa-plus my-float text-white"></i>
-    </a>
-
+    @if ($type != 'rectificaciones')
+        <a href="javascript:ShowModal();" class="float">
+            <i class="fa fa-plus my-float text-white"></i>
+        </a>
+    @endif
     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
     <div class="modal fade" id="modal_acta_matrimonio" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
@@ -657,4 +696,11 @@
 
 
         </script>
+    <script>
+        $('input[type=text]').bind('keyup blur', function() {
+            var node = $(this);
+            console.log(node)
+            node.val(node.val().replace(/[^a-z]/g, ''));
+        });
+    </script>
 </x-default-layout>

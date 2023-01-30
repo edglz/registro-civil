@@ -31,6 +31,14 @@ class DashboardController extends Controller
         addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock']);
         return view('pages.dashboards.inicio', []);
     }
+    public function rectificaciones()
+    {
+        return view('pages.dashboards.index', [
+            'type' => 'rectificaciones',
+            'name' => 'rectificaciones',
+            'data' => $this->getDetail('rectificacion')
+        ]);
+    }
     public function ayuda()
     {
         addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock']);
